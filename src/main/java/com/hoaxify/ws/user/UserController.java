@@ -26,15 +26,6 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
-        String username = user.getUsername();
-        if (username == null || username.isEmpty()) {
-            Map<String, String> validationErrors = new HashMap<>();
-            validationErrors.put("username","usename cannot be null!");
-            ApiError error = new ApiError(400,"Validation Error","/api/1.0/users");
-            error.setValidationErrors(validationErrors);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
-        }
-
         return ResponseEntity.ok(userService.save(user));
     }
 
