@@ -18,7 +18,9 @@ import java.util.Collection;
  */
 @Data
 @Entity
+
 public class User implements UserDetails {
+
     private static final String PASSWORD_PATTERN = "((?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{6,255})";
 
     @Id
@@ -31,6 +33,7 @@ public class User implements UserDetails {
     @UniqueUsername
     @Column
     private String username;
+
 
     @NotNull(message = "{hoaxify.constraint.displayName.NotNull.message}")
     @JsonView(Views.Base.class)
