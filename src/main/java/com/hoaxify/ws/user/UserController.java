@@ -5,8 +5,6 @@ import com.hoaxify.ws.utils.ApiPaths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,7 +27,8 @@ public class UserController {
         return ResponseEntity.ok(userService.save(user));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+
+/*    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleValidationException(MethodArgumentNotValidException exception){
         ApiError error = new ApiError(400,"Validation Error","/api/1.0/users");
@@ -40,5 +39,5 @@ public class UserController {
         }
         error.setValidationErrors(validationErrors);
         return error;
-    }
+    }*/
 }
