@@ -11,4 +11,8 @@ public class ApiPaths {
     public static class UserCtrl {
         public static final String CTRL = BASE_PATH + VERSION + "/users";
     }
+
+    public static class AuthCtrl {
+        public static final String CTRL = BASE_PATH + VERSION + "/auth";
+    }
 }
