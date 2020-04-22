@@ -1,15 +1,16 @@
 package com.hoaxify.ws.user;
 
-import com.hoaxify.ws.error.ApiError;
+import com.hoaxify.ws.shared.CurrentUser;
+import com.hoaxify.ws.user.vm.UserVM;
 import com.hoaxify.ws.utils.ApiPaths;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created By Yasin Memic on Mar, 2020
@@ -27,17 +28,9 @@ public class UserController {
         return ResponseEntity.ok(userService.save(user));
     }
 
+    @GetMapping
+    Page<UserVM> getUsers(Pageable page, @CurrentUser User user) {
+        return userService.getUsers(page, user).map(UserVM::new);
+    }
 
-/*    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleValidationException(MethodArgumentNotValidException exception){
-        ApiError error = new ApiError(400,"Validation Error","/api/1.0/users");
-        Map<String, String> validationErrors = new HashMap<>();
-
-        for(FieldError fieldError : exception.getBindingResult().getFieldErrors()){
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
-        }
-        error.setValidationErrors(validationErrors);
-        return error;
-    }*/
 }
