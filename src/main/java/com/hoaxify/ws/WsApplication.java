@@ -21,6 +21,8 @@ public class WsApplication {
         return (args) -> {
             for (int i = 0; i < 50; i++) {
                 User user = new User();
+                user.setUsername("user" + i);
+                user.setDisplayName("display_name_" + i);
                 user.setUsername("user_" + i);
                 user.setDisplayName("Display Name " + i);
                 user.setPassword("1234");
