@@ -1,6 +1,7 @@
 package com.hoaxify.ws.user;
 
 import com.hoaxify.ws.shared.CurrentUser;
+import com.hoaxify.ws.user.vm.UserUpdateVM;
 import com.hoaxify.ws.user.vm.UserVM;
 import com.hoaxify.ws.utils.ApiPaths;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -33,4 +35,15 @@ public class UserController {
         return userService.getUsers(page, user).map(UserVM::new);
     }
 
+    @GetMapping("/{username}")
+    UserVM getUser(@PathVariable("username") String username) {
+        return new UserVM(userService.getByUsername(username));
+    }
+
+    @PutMapping("/{username}")
+    @PreAuthorize("#username == principal.username")
+        //Spring Expression Language (SpEL)
+    UserVM updateUser(@RequestBody UserUpdateVM updatedUser, @PathVariable("username") String username) {
+        return new UserVM(userService.updateUser(username, updatedUser));
+    }
 }
