@@ -1,7 +1,5 @@
 package com.hoaxify.ws.user;
 
-import com.fasterxml.jackson.annotation.JsonView;
-import com.hoaxify.ws.shared.Views;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -27,14 +25,12 @@ public class User implements UserDetails {
     private Long id;
 
     @NotNull(message = "{hoaxify.constraint.username.NotNull.message}")
-    @JsonView(Views.Base.class)
     @Size(min = 4, max = 255)
     @UniqueUsername
     @Column
     private String username;
 
     @NotNull(message = "{hoaxify.constraint.displayName.NotNull.message}")
-    @JsonView(Views.Base.class)
     @Size(min = 4, max = 255)
     private String displayName;
 
@@ -43,7 +39,6 @@ public class User implements UserDetails {
     @Size(min = 6, max = 255)
     private String password;
 
-    @JsonView(Views.Base.class)
     private String image;
 
 
