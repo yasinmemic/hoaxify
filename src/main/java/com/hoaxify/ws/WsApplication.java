@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
@@ -17,11 +18,12 @@ public class WsApplication {
     }
 
     @Bean
+    @Profile("dev")
     CommandLineRunner createInitialUsers(UserService userService) {
         return (args) -> {
             for (int i = 0; i < 50; i++) {
                 User user = new User();
-                user.setUsername("user_" + i);
+                user.setUsername("user" + i);
                 user.setDisplayName("Display Name " + i);
                 user.setPassword("1234");
                 userService.save(user);

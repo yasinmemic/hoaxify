@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 /**
  * Created By Yasin Memic on Mar, 2020
@@ -41,9 +42,8 @@ public class UserController {
     }
 
     @PutMapping("/{username}")
-    @PreAuthorize("#username == principal.username")
-        //Spring Expression Language (SpEL)
-    UserVM updateUser(@RequestBody UserUpdateVM updatedUser, @PathVariable("username") String username) {
+    @PreAuthorize("#username == principal.username") //Spring Expression Language (SpEL)
+    UserVM updateUser(@RequestBody UserUpdateVM updatedUser, @PathVariable("username") String username) throws IOException {
         return new UserVM(userService.updateUser(username, updatedUser));
     }
 }
