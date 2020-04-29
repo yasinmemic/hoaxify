@@ -1,14 +1,15 @@
 spring:
   profiles:
     active: dev
-server:
-  port: 8000
+
 
 ---
 spring:
   profiles: production
 hoaxify:
   upload-path: storage-production
+server:
+  port: 9000
 ---
 spring:
   jpa:
@@ -30,6 +31,8 @@ spring:
     username: root
     password: root
   profiles: dev
+server:
+  port: 8000
 
 hoaxify:
   upload-path: storage-dev
