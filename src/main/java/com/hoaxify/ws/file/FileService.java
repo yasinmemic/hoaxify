@@ -1,7 +1,7 @@
 package com.hoaxify.ws.file;
 
 import com.hoaxify.ws.configuration.AppConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -19,8 +19,13 @@ import java.util.UUID;
 @Service
 public class FileService {
 
-    @Autowired
     AppConfiguration appConfiguration;
+    Tika tika;
+
+    public FileService(AppConfiguration appConfiguration) {
+        this.appConfiguration = appConfiguration;
+        this.tika = new Tika();
+    }
 
     public String writeBase64EncodedStringToFile(String imageName) throws IOException {
         String fileName = generateRandomName();
@@ -40,6 +45,12 @@ public class FileService {
         if (oldImageName == null) {
             return;
         }
-        Files.deleteIfExists(Paths.get(appConfiguration.getUploadPath(),oldImageName));
+        Files.deleteIfExists(Paths.get(appConfiguration.getUploadPath(), oldImageName));
+    }
+
+    public String detectType(String value) {
+        byte[] base64Encoded = Base64.getDecoder().decode(value);
+        String fileType = tika.detect(base64Encoded);
+        return fileType;
     }
 }

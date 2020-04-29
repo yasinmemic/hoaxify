@@ -27,7 +27,6 @@ public class User implements UserDetails {
     @NotNull(message = "{hoaxify.constraint.username.NotNull.message}")
     @Size(min = 4, max = 255)
     @UniqueUsername
-    @Column
     private String username;
 
     @NotNull(message = "{hoaxify.constraint.displayName.NotNull.message}")

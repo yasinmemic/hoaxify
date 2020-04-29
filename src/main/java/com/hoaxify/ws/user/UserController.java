@@ -43,7 +43,7 @@ public class UserController {
 
     @PutMapping("/{username}")
     @PreAuthorize("#username == principal.username") //Spring Expression Language (SpEL)
-    UserVM updateUser(@RequestBody UserUpdateVM updatedUser, @PathVariable("username") String username) throws IOException {
+    UserVM updateUser(@Valid @RequestBody UserUpdateVM updatedUser, @PathVariable("username") String username) throws IOException {
         return new UserVM(userService.updateUser(username, updatedUser));
     }
 }
