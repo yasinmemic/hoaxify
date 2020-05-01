@@ -6,10 +6,23 @@ spring:
 ---
 spring:
   profiles: production
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hoax
+    username: postgres
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: none
 hoaxify:
   upload-path: storage-production
 server:
-  port: 9000
+  port: 8000
 ---
 spring:
   jpa:
@@ -26,6 +39,7 @@ spring:
         pageable:
           default-page-size: 10
           max-page-size: 100
+    show-sql: true
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/hoaxify?useTimezone=true&serverTimezone=UTC&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8
     username: root
