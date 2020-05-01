@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -34,10 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, ApiPaths.AuthCtrl.CTRL).authenticated()
                 .antMatchers(HttpMethod.PUT, ApiPaths.UserCtrl.CTRL + "/{username}").authenticated()
-
+                .antMatchers(HttpMethod.POST, ApiPaths.HoaxCtrl.CTRL).authenticated()
                 .and()
                 .authorizeRequests().anyRequest().permitAll();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //ilk login olduktan sonra sonraki requestlerde authentication parametrelerini göz ardı etmemesi için...
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Override
