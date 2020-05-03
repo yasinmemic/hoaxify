@@ -43,22 +43,23 @@ public class HoaxController {
         return hoaxService.getAll(page).map(HoaxVM::new);
     }
 
-    @GetMapping(ApiPaths.HoaxCtrl.CTRL + "/{id:[0-9]+}")
+    @GetMapping({ApiPaths.HoaxCtrl.CTRL + "/{id:[0-9]+}", ApiPaths.UserCtrl.CTRL + "/{username}/hoaxes/{id:[0-9]+}" })
     public ResponseEntity<?> getAllHoaxesRelative(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page,
                                                   @PathVariable("id") Long id,
+                                                  @PathVariable(value = "username", required = false) String username,
                                                   @RequestParam(name = "count", required = false, defaultValue = "false") Boolean count,
                                                   @RequestParam(value = "direction", required = false, defaultValue = "false") String direction) {
         if (count) {
-            Long newHoaxCount = hoaxService.getNewHoaxesCount(id);
+            Long newHoaxCount = hoaxService.getNewHoaxesCount(id, username);
             Map<String, Long> response = new HashMap<>();
             response.put("count", newHoaxCount);
             return ResponseEntity.ok(response);
         }
         if(direction.equals("after")){
-            List<HoaxVM> newHoaxes = hoaxService.getNewHoaxes(id, page.getSort()).stream().map(HoaxVM::new).collect(Collectors.toList());
+            List<HoaxVM> newHoaxes = hoaxService.getNewHoaxes(id, username, page.getSort()).stream().map(HoaxVM::new).collect(Collectors.toList());
             return ResponseEntity.ok(newHoaxes);
         }
-        return ResponseEntity.ok(hoaxService.getOldHoaxes(id, page).map(HoaxVM::new));
+        return ResponseEntity.ok(hoaxService.getOldHoaxes(id, username, page).map(HoaxVM::new));
     }
 
     @GetMapping(ApiPaths.UserCtrl.CTRL + "/{username}/hoaxes")
@@ -67,7 +68,7 @@ public class HoaxController {
         return hoaxService.getAllByUsername(username, pageable).map(HoaxVM::new);
     }
 
-    @GetMapping(ApiPaths.UserCtrl.CTRL + "/{username}/hoaxes/{id:[0-9]+}")
+ /*   @GetMapping(ApiPaths.UserCtrl.CTRL + "/{username}/hoaxes/{id:[0-9]+}")
     public ResponseEntity<?> getUserHoaxesRelative(@PathVariable("username") String username, @PathVariable("id") Long id,
                                                    @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable page,
                                                    @RequestParam(name = "count", defaultValue = "false", required = false) Boolean count,
@@ -83,5 +84,5 @@ public class HoaxController {
             return ResponseEntity.ok(newHoaxes);
         }
         return ResponseEntity.ok(hoaxService.getAllOldHoaxesByUsername(id, username, page).map(HoaxVM::new));
-    }
+    }*/
 }
