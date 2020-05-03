@@ -1,8 +1,10 @@
 package com.hoaxify.ws.hoax;
 
+import com.hoaxify.ws.file.FileAttachment;
+import com.hoaxify.ws.file.FileAttachmentRepository;
+import com.hoaxify.ws.hoax.vm.HoaxSubmitVM;
 import com.hoaxify.ws.user.User;
 import com.hoaxify.ws.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created By Yasin Memic on Apr, 2020
@@ -18,16 +21,31 @@ import java.util.List;
 @Service
 public class HoaxService {
 
-    @Autowired
     HoaxRepository hoaxRepository;
 
-    @Autowired
     UserService userService;
 
-    public Hoax save(Hoax hoax, User user) {
+    FileAttachmentRepository fileAttachmentRepository;
+
+    public HoaxService(HoaxRepository hoaxRepository, UserService userService, FileAttachmentRepository fileAttachmentRepository) {
+        this.hoaxRepository = hoaxRepository;
+        this.userService = userService;
+        this.fileAttachmentRepository = fileAttachmentRepository;
+    }
+
+    public void save(HoaxSubmitVM hoaxSubmitVM, User user) {
+        Hoax hoax = new Hoax();
+        hoax.setContent(hoaxSubmitVM.getContent());
         hoax.setTimestamp(new Date());
         hoax.setUser(user);
-        return hoaxRepository.save(hoax);
+        hoaxRepository.save(hoax);
+
+        Optional<FileAttachment> fileAttachment = fileAttachmentRepository.findById(hoaxSubmitVM.getAttachmentId());
+        if (fileAttachment.isPresent()) {
+            FileAttachment attachment = fileAttachment.get();
+            attachment.setHoax(hoax);
+            fileAttachmentRepository.save(attachment);
+        }
     }
 
     public Page<Hoax> getAll(Pageable page) {

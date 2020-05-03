@@ -12,4 +12,18 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "hoaxify")
 public class AppConfiguration {
     private String uploadPath;
+
+    private Long fileCleanupTime;
+
+    private String profileStorage = "profile";
+
+    private String attachmentStorage = "attachments";
+
+    public String getProfileStoragePath() {
+        return uploadPath + "/" + profileStorage;
+    }
+
+    public String getAttachmentStoragePath() {
+        return uploadPath + "/" + attachmentStorage;
+    }
 }
