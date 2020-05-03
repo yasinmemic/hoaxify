@@ -1,7 +1,7 @@
 package com.hoaxify.ws;
 
-import com.hoaxify.ws.hoax.Hoax;
 import com.hoaxify.ws.hoax.HoaxService;
+import com.hoaxify.ws.hoax.vm.HoaxSubmitVM;
 import com.hoaxify.ws.user.User;
 import com.hoaxify.ws.user.UserService;
 import org.springframework.boot.CommandLineRunner;
@@ -30,10 +30,10 @@ public class WsApplication {
                 user.setPassword("1234");
                 userService.save(user);
 
-                for (int j = 1; j <= 2; j++) {
-                    Hoax hoax = new Hoax();
+                for (int j = 1; j <= 5; j++) {
+                    HoaxSubmitVM hoax = new HoaxSubmitVM();
                     hoax.setContent("hoax-" + j + " from" + " user " + i);
-                    hoaxService.save(hoax,user);
+                    hoaxService.save(hoax, user);
                 }
             }
 

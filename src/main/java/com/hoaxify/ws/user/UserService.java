@@ -47,14 +47,19 @@ public class UserService {
         return inDb;
     }
 
-    public User updateUser(String username, UserUpdateVM updatedUser) throws IOException {
+    public User updateUser(String username, UserUpdateVM updatedUser) {
         User inDb = getByUsername(username);
         inDb.setDisplayName(updatedUser.getDisplayName());
         if (updatedUser.getImage() != null) {
             String oldImageName = inDb.getImage();
-            String storedFileName = fileService.writeBase64EncodedStringToFile(updatedUser.getImage());
+            String storedFileName = null;
+            try {
+                storedFileName = fileService.writeBase64EncodedStringToFile(updatedUser.getImage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             inDb.setImage(storedFileName);
-            fileService.deleteFile(oldImageName);
+            fileService.deleteProfileImage(oldImageName);
         }
         return userRepository.save(inDb);
     }

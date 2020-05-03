@@ -1,6 +1,9 @@
 spring:
   profiles:
     active: dev
+hoaxify:
+  upload-path: storage-dev
+  file-cleanup-time: 1000000
 
 
 ---
@@ -19,6 +22,9 @@ spring:
         persistence:
           validation:
             mode: none
+  servlet:
+    multipart:
+      max-file-size: 10MB
 hoaxify:
   upload-path: storage-production
 server:
@@ -45,11 +51,13 @@ spring:
     username: root
     password: root
   profiles: dev
+  servlet:
+    multipart:
+      max-file-size: 10MB
+
 server:
   port: 8000
 
-hoaxify:
-  upload-path: storage-dev
 
 
 

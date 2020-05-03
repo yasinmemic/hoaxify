@@ -23,18 +23,24 @@ public class WebConfiguration implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:./"+appConfiguration.getUploadPath()+"/")
+                .addResourceLocations("file:./" + appConfiguration.getUploadPath() + "/")
                 .setCacheControl(CacheControl.maxAge(365, TimeUnit.DAYS));
     }
 
     @Bean
-    CommandLineRunner createStorageDirectories(){
+    CommandLineRunner createStorageDirectories() {
         return (args -> {
-            File file = new File(appConfiguration.getUploadPath());
-            boolean folderExist = file.exists() && file.isDirectory();
-            if(!folderExist){
-                file.mkdir();
-            }
+            createFolder(appConfiguration.getUploadPath());
+            createFolder(appConfiguration.getAttachmentStoragePath());
+            createFolder(appConfiguration.getProfileStoragePath());
         });
+    }
+
+    private void createFolder(String path) {
+        File file = new File(path);
+        boolean folderExist = file.exists() && file.isDirectory();
+        if (!folderExist) {
+            file.mkdir();
+        }
     }
 }

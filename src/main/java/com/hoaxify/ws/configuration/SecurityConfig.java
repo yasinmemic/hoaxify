@@ -33,8 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, ApiPaths.AuthCtrl.CTRL).authenticated()
-                .antMatchers(HttpMethod.PUT, ApiPaths.UserCtrl.CTRL + "/{username}").authenticated()
+                .antMatchers(HttpMethod.PUT, ApiPaths.UserCtrl.UserCtrlWithUsernameCtrl.CTRL).authenticated()
                 .antMatchers(HttpMethod.POST, ApiPaths.HoaxCtrl.CTRL).authenticated()
+                .antMatchers(HttpMethod.POST, ApiPaths.HoaxCtrl.HoaxAttachmentsCtrl.CTRL).authenticated()
                 .and()
                 .authorizeRequests().anyRequest().permitAll();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
