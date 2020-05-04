@@ -1,5 +1,7 @@
 package com.hoaxify.ws.error;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -16,11 +18,13 @@ import java.util.Map;
  * Created By Yasin Memic on Apr, 2020
  */
 @RestController
+@Api(value = "Errors return with ApiError model")
 public class ErrorHandler implements ErrorController {
 
     @Autowired
     private ErrorAttributes errorAttributes;
 
+    @ApiOperation(value = "Error api return an error with ApiError model")
     @RequestMapping("/error")
     ApiError handleError(WebRequest webRequest) {
         Map<String, Object> attributes = this.errorAttributes.getErrorAttributes(webRequest, true);

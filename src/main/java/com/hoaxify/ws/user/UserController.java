@@ -4,6 +4,8 @@ import com.hoaxify.ws.shared.CurrentUser;
 import com.hoaxify.ws.user.vm.UserUpdateVM;
 import com.hoaxify.ws.user.vm.UserVM;
 import com.hoaxify.ws.utils.ApiPaths;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,27 +20,32 @@ import javax.validation.Valid;
  * Created By Yasin Memic on Mar, 2020
  */
 @RestController
+@Api(value = "User Controller APIs")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
+    @ApiOperation(value = "Create User", response = ResponseEntity.class)
     @PostMapping(ApiPaths.UserCtrl.CTRL)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<?> createUser(@Valid @RequestBody User user) {
         return ResponseEntity.ok(userService.save(user));
     }
 
+    @ApiOperation(value = "Get All Users", response = Page.class)
     @GetMapping(ApiPaths.UserCtrl.CTRL)
     Page<UserVM> getUsers(Pageable page, @CurrentUser User user) {
         return userService.getUsers(page, user).map(UserVM::new);
     }
 
+    @ApiOperation(value = "Get User by Username", response = UserVM.class)
     @GetMapping(ApiPaths.UserCtrl.UserCtrlWithUsernameCtrl.CTRL)
     UserVM getUser(@PathVariable("username") String username) {
         return new UserVM(userService.getByUsername(username));
     }
 
+    @ApiOperation(value = "Update User", response = UserVM.class)
     @PutMapping(ApiPaths.UserCtrl.UserCtrlWithUsernameCtrl.CTRL)
     @PreAuthorize("#username == principal.username")
         //Spring Expression Language (SpEL)
@@ -47,9 +54,10 @@ public class UserController {
         return new UserVM(user);
     }
 
+    @ApiOperation(value = "Delete User after checking principal", response = String.class)
     @DeleteMapping(ApiPaths.UserCtrl.UserCtrlWithUsernameCtrl.CTRL)
     @PreAuthorize("#username == principal.username")
-    String deleteUser(@PathVariable("username") String username){
+    String deleteUser(@PathVariable("username") String username) {
         userService.deleteUser(username);
         return "User is removed";
     }
