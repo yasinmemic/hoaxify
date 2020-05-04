@@ -2,7 +2,9 @@ package com.hoaxify.ws.user;
 
 import com.hoaxify.ws.error.NotFoundException;
 import com.hoaxify.ws.file.FileService;
+import com.hoaxify.ws.hoax.HoaxService;
 import com.hoaxify.ws.user.vm.UserUpdateVM;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +27,7 @@ public class UserService {
         this.userRepository = userRepository;
         this.fileService = fileService;
     }
+
 
     public User save(User user) {
         String encryptedPassword = this.passwordEncoder.encode(user.getPassword());
@@ -64,4 +67,9 @@ public class UserService {
         return userRepository.save(inDb);
     }
 
+    public void deleteUser(String username) {
+        fileService.deleteAllStoredFilesForUser(userRepository.findByUsername(username));
+        userRepository.deleteByUsername(username);
+
+    }
 }

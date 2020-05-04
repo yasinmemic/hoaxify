@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -67,6 +68,13 @@ public class HoaxController {
     public Page<HoaxVM> getUserHoaxes(@PathVariable("username") String username,
                                       @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         return hoaxService.getAllByUsername(username, pageable).map(HoaxVM::new);
+    }
+
+    @DeleteMapping(ApiPaths.HoaxCtrl.HoaxIdCtrl.CTRL)
+    @PreAuthorize("@hoaxSecurityService.isAllowedToDelete(#id,principal)")
+    public String deleteHoax(@PathVariable(name = "id") Long id) {
+        hoaxService.deleteById(id);
+        return "Hoax deleted!";
     }
 
 }

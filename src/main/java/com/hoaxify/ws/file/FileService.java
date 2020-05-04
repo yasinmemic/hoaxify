@@ -1,6 +1,7 @@
 package com.hoaxify.ws.file;
 
 import com.hoaxify.ws.configuration.AppConfiguration;
+import com.hoaxify.ws.user.User;
 import org.apache.tika.Tika;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -93,5 +95,12 @@ public class FileService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteAllStoredFilesForUser(User byUsername) {
+        deleteProfileImage(byUsername.getImage());
+        List<FileAttachment> filesToBeRemoved = fileAttachmentRepository.findByHoax_User(byUsername);
+        filesToBeRemoved.forEach(file -> deleteAttachmentFile(file.getName()));
+
     }
 }
