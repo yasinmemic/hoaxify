@@ -2,9 +2,11 @@ package com.hoaxify.ws.hoax;
 
 import com.hoaxify.ws.file.FileAttachment;
 import com.hoaxify.ws.file.FileAttachmentRepository;
+import com.hoaxify.ws.file.FileService;
 import com.hoaxify.ws.hoax.vm.HoaxSubmitVM;
 import com.hoaxify.ws.user.User;
 import com.hoaxify.ws.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,10 +29,13 @@ public class HoaxService {
 
     FileAttachmentRepository fileAttachmentRepository;
 
-    public HoaxService(HoaxRepository hoaxRepository, UserService userService, FileAttachmentRepository fileAttachmentRepository) {
+    FileService fileService;
+
+    public HoaxService(HoaxRepository hoaxRepository, FileAttachmentRepository fileAttachmentRepository, FileService fileService, UserService userService) {
         this.hoaxRepository = hoaxRepository;
-        this.userService = userService;
         this.fileAttachmentRepository = fileAttachmentRepository;
+        this.fileService = fileService;
+        this.userService = userService;
     }
 
     public void save(HoaxSubmitVM hoaxSubmitVM, User user) {
@@ -102,4 +107,14 @@ public class HoaxService {
             return criteriaBuilder.equal(root.get("user"), user);
         });
     }
+
+    public void deleteById(Long id) {
+        Hoax hoax = hoaxRepository.getOne(id);
+        if (hoax.getFileAttachment() != null) {
+            String fileName = hoax.getFileAttachment().getName();
+            fileService.deleteAttachmentFile(fileName);
+        }
+        hoaxRepository.deleteById(id);
+    }
+
 }

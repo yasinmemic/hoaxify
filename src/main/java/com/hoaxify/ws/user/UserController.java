@@ -46,4 +46,11 @@ public class UserController {
         User user = userService.updateUser(username, updatedUser);
         return new UserVM(user);
     }
+
+    @DeleteMapping(ApiPaths.UserCtrl.UserCtrlWithUsernameCtrl.CTRL)
+    @PreAuthorize("#username == principal.username")
+    String deleteUser(@PathVariable("username") String username){
+        userService.deleteUser(username);
+        return "User is removed";
+    }
 }
