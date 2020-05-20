@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: production
 hoaxify:
   upload-path: storage-dev
   file-cleanup-time: 1000000
