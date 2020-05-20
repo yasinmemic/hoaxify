@@ -1,0 +1,17 @@
+.language: java
+jdk:
+- openjdk8
+
+install:
+  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+
+script:
+  - mvn test
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: KEY
+  app: hoaxify
+  on:
+    repo: Yasinmemic/hoaxify
