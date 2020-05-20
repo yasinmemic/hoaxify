@@ -20,7 +20,7 @@ public class WsApplication {
     }
 
     @Bean
-    @Profile("dev")
+    @Profile("production")
     CommandLineRunner createInitialUsers(UserService userService, HoaxService hoaxService) {
         return (args) -> {
             for (int i = 1; i <= 25; i++) {
