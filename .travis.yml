@@ -11,7 +11,7 @@ script:
 deploy:
   provider: heroku
   api-key:
-    secure: $HEROKU_API_KEY
+    secure: 1f391bea-693a-4b20-980a-2d0a9b1905aa
   app: hoaxify
   skip_cleanup: true
 
