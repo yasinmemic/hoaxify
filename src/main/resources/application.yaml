@@ -47,9 +47,7 @@ spring:
           max-page-size: 100
     show-sql: true
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/hoaxify?useTimezone=true&serverTimezone=UTC&autoReconnect=true&useSSL=false&useUnicode=true&characterEncoding=UTF-8
-    username: root
-    password: root
+    url: jdbc:h2:./devdb
   profiles: dev
   servlet:
     multipart:
@@ -57,7 +55,5 @@ spring:
 
 server:
   port: 8000
-
-
 
 
