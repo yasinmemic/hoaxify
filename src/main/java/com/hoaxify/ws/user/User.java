@@ -40,7 +40,6 @@ public class User implements UserDetails {
     @Size(min = 6, max = 255)
     private String password;
 
-    @Lob
     private String image;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
