@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @Api(value = "Hoax Controller APIs")
+@CrossOrigin
 public class HoaxController {
 
     HoaxService hoaxService;

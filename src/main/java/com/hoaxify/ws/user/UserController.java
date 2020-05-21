@@ -21,6 +21,7 @@ import javax.validation.Valid;
  */
 @RestController
 @Api(value = "User Controller APIs")
+@CrossOrigin
 public class UserController {
 
     @Autowired
