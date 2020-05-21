@@ -6,6 +6,7 @@ import com.hoaxify.ws.user.vm.UserVM;
 import com.hoaxify.ws.utils.ApiPaths;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(ApiPaths.AuthCtrl.CTRL)
+@CrossOrigin
 @Api(value = "Authentication Controller")
 public class AuthController {
 
